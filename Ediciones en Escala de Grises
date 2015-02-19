@@ -1,0 +1,148 @@
+c# -*- coding: utf-8 -*- 
+#from pyexcelerate import *
+from PIL import Image
+from numpy import *
+import os.path
+import Image
+
+
+################################################################
+def EscalaGrises(Nombre_Imagen):
+    print "La imagen se convertira a Escala de Grises\n"
+    foto = Image.open(Nombre_Imagen)
+    x , y = foto.size
+    foto = foto.convert("RGB")
+    for j in range(y):
+        for i in range(x):
+            r , g , b = foto.getpixel((i,j))
+            a = (r+g+b)/3
+            foto.putpixel((i,j), (a, a, a))
+    foto.save(Nombre_Imagen,"PNG")
+    
+################################################################
+def Aclarar(Nombre_Imagen):
+    print "\n\nEntrando a la funcion Aclarar\n"
+    foto = Image.open(Nombre_Imagen)
+    x , y = foto.size
+    intensidad = input('Cuanto quieres aclarar la imagen 0-255: ')
+    while intensidad<0 or intensidad>255:
+        intensidad = input('Error - selecciona un valor dentro del rango 0-255: ')
+    for j in range(y):
+        for i in range(x):
+            r , g , b = foto.getpixel((i,j))
+            a=(r+g+b)/3
+            if (intensidad+a)>255:
+                a=255
+            else:
+                a+=intensidad
+            foto.putpixel((i,j), (a, a, a))
+    foto.save("Aclarada.png","PNG")
+  
+################################################################
+def Oscurecer(Nombre_Imagen):
+    print "\n\nEntrando a la funcion Oscurecer\n"
+    foto = Image.open(Nombre_Imagen)
+    x , y = foto.size
+    intensidad = input('Cuanto quieres oscurecer la imagen 0-255: ')
+    while intensidad<0 or intensidad>255:
+        intensidad = input('Error - selecciona un valor dentro del rango 0-255: ')
+    for j in range(y):
+        for i in range(x):
+            r , g , b = foto.getpixel((i,j))
+            a=(r+g+b)/3
+            if a>=intensidad:
+                a-=intensidad
+            else:
+                a=0
+            foto.putpixel((i,j), (r, r, r))
+    foto.save("Oscurecidad.png","PNG")
+
+################################################################
+def Negativo(Nombre_Imagen):
+    print "\n\nEntrando a la funcion Negativo\n"
+    foto = Image.open(Nombre_Imagen)
+    x , y = foto.size
+    for j in range(y):
+        for i in range(x):
+            r , g , b = foto.getpixel((i,j))
+            a=(r+g+b)/3
+            a=255-r
+            foto.putpixel((i,j), (a, a, a))
+    foto.save("Negativo.png","PNG")
+
+################################################################
+def Umbral(Nombre_Imagen):
+    print "\n\nEntrando a la funcion Umbral\n"
+    foto = Image.open(Nombre_Imagen)
+    x , y = foto.size
+    umbrl = input('Dame el valor del Umbral 0-255: ')
+    while umbrl<0 or umbrl>255:
+        umbrl = input('Error - selecciona un valor dentro del rango 0 - 255: ')
+    for j in range(y):
+        for i in range(x):
+            r , g , b = foto.getpixel((i,j))
+            a=(r+g+b)/3
+            if a<umbrl:
+                a=0
+            else:
+                a=255
+            foto.putpixel((i,j), (a, a, a))
+    foto.save("Umbral.png","PNG")
+
+################################################################
+def Shifting_Vertical(Nombre_Imagen):
+    print "\n\nEntrando a la funcion Shifting Vertical\n"
+    foto = Image.open(Nombre_Imagen)
+    x , y = foto.size
+    foto2 = Image.new("RGB",(x,y))
+    for j in range(y):
+        for i in range(x):
+            r , g , b = foto.getpixel((i,j))
+            a=(r+g+b)/3
+            foto2.putpixel(((x-i-1),(j)), (a, a, a))
+    foto2.save("Vertical.png","PNG")
+    
+################################################################
+def Shifting_Horizontal(Nombre_Imagen):
+    print "\n\nEntrando a la funcion Shifting Horizontal\n"
+    foto = Image.open(Nombre_Imagen)
+    x , y = foto.size
+    foto2 = Image.new("RGB",(x,y))
+    for j in range(y):
+        for i in range(x):
+            r , g , b = foto.getpixel((i,j))
+            a=(r+g+b)/3
+            foto2.putpixel(((i),(y-j-1)), (a, a, a))
+    foto2.save("Horizontal.png","PNG")
+    
+################################################################
+def Shifting_Diagonal(Nombre_Imagen):
+    print "\n\nEntrando a la funcion Shifting Diagonal\n"
+    foto = Image.open(Nombre_Imagen)
+    x , y = foto.size
+    foto2 = Image.new("RGB",(x,y))
+    for j in range(y):
+        for i in range(x):
+            r , g , b = foto.getpixel((i,j))
+            a=(r+g+b)/3
+            foto2.putpixel(((x-i-1),(y-j-1)), (a, a, a))
+    foto2.save("Diagonal.png","PNG")
+
+################################################################
+def main():
+    Nombre_Imagen = "Ejemplo1.png"
+    while os.path.isfile(Nombre_Imagen)==False:
+        Nombre_Imagen = raw_input('Dame el nombre de la Imagen: ')
+    
+    EscalaGrises(Nombre_Imagen)
+    Aclarar(Nombre_Imagen)
+    Oscurecer(Nombre_Imagen)
+    Negativo(Nombre_Imagen)
+    Umbral(Nombre_Imagen)
+    Shifting_Vertical(Nombre_Imagen)
+    Shifting_Horizontal(Nombre_Imagen)
+    Shifting_Diagonal(Nombre_Imagen)
+    
+    raw_input('Selecciona un caracter y presiona enter')
+
+main()
