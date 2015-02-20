@@ -1,3 +1,5 @@
+# el nombre del archivo hay que cambiarlo y subir las imagenes de entrada y salida el repo
+
 c# -*- coding: utf-8 -*- 
 #from pyexcelerate import *
 from PIL import Image
